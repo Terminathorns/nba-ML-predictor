@@ -2,17 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import requests
-from selenium import webdriver
 from bs4 import BeautifulSoup
-from bs4 import Comment
-from copy import deepcopy
-
-'''
-def nested(vals, start, end):
-        out = deepcopy(vals)
-        out[start:end+1] = [out[start:end+1]]
-        return out
-'''
 
 class nbastats:
 
@@ -309,13 +299,3 @@ class nbastats:
         #print("div_per_poss-team" in r.text)
         
         return df
-
-
-'''
-print("Team Stats Per Game: \n", nbastats(2021).team_per_game(),"\n")
-print("Opponent Stats Per Game: \n", nbastats(2021).opp_per_game(),"\n")
-
-print("Team Stats Per 100: \n",nbastats(2021).team_per_100(),"\n")
-print("Opponent Stats Per 100: \n",nbastats(2021).opp_per_100(),"\n")
-'''
-print("Team Advanced Stats: \n",nbastats(2015).team_shooting(),"\n")
