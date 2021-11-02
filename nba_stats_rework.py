@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import requests
 from bs4 import BeautifulSoup
+from sklearn.utils import check_matplotlib_support
 
 class nbastats:
 
@@ -17,6 +18,7 @@ class nbastats:
         header = []
         ptag = soup.findAll('p')[2]
         champ = ptag.find('a').contents[0]
+        champ = str(int(self.year)) + " " + champ
         div = soup.find('div',{'id':'div_per_game-team'})
         table = div.find('table',{'id':'per_game-team'})
         
@@ -38,6 +40,7 @@ class nbastats:
         header.remove('Rk')
         df = pd.DataFrame(df_template,columns=header)
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
+        df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
 
         for i in df['Team']:
@@ -63,6 +66,7 @@ class nbastats:
         header = []
         ptag = soup.findAll('p')[2]
         champ = ptag.find('a').contents[0]
+        champ = str(int(self.year)) + " " + champ
         div = soup.find('div',{'id':'div_per_game-opponent'})
         table = div.find('table',{'id':'per_game-opponent'})
         
@@ -83,6 +87,7 @@ class nbastats:
         header.remove('Rk')
         df = pd.DataFrame(df_template,columns=header)
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
+        df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
 
         for i in df['Team']:
@@ -109,6 +114,7 @@ class nbastats:
         header = []
         ptag = soup.findAll('p')[2]
         champ = ptag.find('a').contents[0]
+        champ = str(int(self.year)) + " " + champ
         div = soup.find('div',{'id':'div_per_poss-team'})
         table = div.find('table',{'id':'per_poss-team'})
         
@@ -123,13 +129,14 @@ class nbastats:
                 tables.append(row)
 
         df_template = []
-        for i in range(0,len(table.find_all('tr'))-2):
+        for i in range(0,len(table.find_all('tr'))-1):
             df_template.append(list(tables[24*i:(24*i)+24]))
 
 
         header.remove('Rk')
         df = pd.DataFrame(df_template,columns=header)
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
+        df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
 
         for i in df['Team']:
@@ -156,6 +163,7 @@ class nbastats:
         header = []
         ptag = soup.findAll('p')[2]
         champ = ptag.find('a').contents[0]
+        champ = str(int(self.year)) + " " + champ
         div = soup.find('div',{'id':'div_per_poss-opponent'})
         table = div.find('table',{'id':'per_poss-opponent'})
         
@@ -163,6 +171,7 @@ class nbastats:
             for th in tr.find_all('th'):
                 column = th.text
                 header.append(column)
+            header[4:25] = ["Opp " + i for i in header[4:25]]
                 
         for tr in table.find_all('tbody'):
             for td in tr.find_all('td'):
@@ -170,12 +179,13 @@ class nbastats:
                 tables.append(row)
 
         df_template = []
-        for i in range(0,len(table.find_all('tr'))-2):
+        for i in range(0,len(table.find_all('tr'))-1):
             df_template.append(list(tables[24*i:(24*i)+24]))
-
+        
         header.remove('Rk')
         df = pd.DataFrame(df_template,columns=header)
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
+        df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
 
         for i in df['Team']:
@@ -190,6 +200,7 @@ class nbastats:
 
         #print("table_container is_setup current" in r.text)
         #print("div_per_poss-team" in r.text)
+        
         return df
 
 
@@ -201,6 +212,7 @@ class nbastats:
         header = []
         ptag = soup.findAll('p')[2]
         champ = ptag.find('a').contents[0]
+        champ = str(int(self.year)) + " " + champ
         div = soup.find('div',{'id':'div_advanced-team'})
         table = div.find('table',{'id':'advanced-team'})
         
@@ -232,6 +244,7 @@ class nbastats:
     
         df = pd.DataFrame(df_template,columns=header)
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
+        df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
 
         for i in df['Team']:
@@ -258,6 +271,7 @@ class nbastats:
         header = []
         ptag = soup.findAll('p')[2]
         champ = ptag.find('a').contents[0]
+        champ = str(int(self.year)) + " " + champ
         div = soup.find('div',{'id':'div_shooting-team'})
         table = div.find('table',{'id':'shooting-team'})
         
@@ -288,6 +302,7 @@ class nbastats:
     
         df = pd.DataFrame(df_template,columns=header)
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
+        df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
 
         for i in df['Team']:
@@ -315,6 +330,7 @@ class nbastats:
         header = []
         ptag = soup.findAll('p')[2]
         champ = ptag.find('a').contents[0]
+        champ = str(int(self.year)) + " " + champ
         div = soup.find('div',{'id':'div_shooting-opponent'})
         table = div.find('table',{'id':'shooting-opponent'})
         
@@ -345,6 +361,7 @@ class nbastats:
     
         df = pd.DataFrame(df_template,columns=header)
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
+        df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
 
         for i in df['Team']:
@@ -361,38 +378,13 @@ class nbastats:
         #print("div_per_poss-team" in r.text)
         return df
 
-directory = "/Users/macowner/Documents/Predictor_csv_files/"
-start, end = int(input("Type in a start year for the search: ")), int(input("Type in an end year: "))
-years = range(start,end+1)
-team_per_game_list = []
-opp_per_game_list = []
-team_per_100_list = []
-opp_per_100_list = []
-team_advanced_list = []
 
-for i in years:
-    team_per_game_list.append(nbastats(i).team_per_game())
-    with open(directory + "{}_team_per_game.txt".format(i), "w") as f1:
-        f1.write(team_per_game_list[i-start].to_csv())
+'''
 
-    opp_per_game_list.append(nbastats(i).opp_per_game())
-    with open(directory + "{}_opp_per_game.txt".format(i), "w") as f1:
-        f1.write(opp_per_game_list[i-start].to_csv())
 
-    team_per_100_list.append(nbastats(i).team_per_100())
-    with open(directory + "{}_team_per_100.txt".format(i), "w") as f1:
-        f1.write(team_per_100_list[i-start].to_csv())
+'''
 
-    opp_per_100_list.append(nbastats(i).opp_per_100())
-    with open(directory + "{}_opp_per_100.txt".format(i), "w") as f1:
-        f1.write(opp_per_100_list[i-start].to_csv())
-
-    team_advanced_list.append(nbastats(i).team_advanced())
-    with open(directory + "{}_team_advanced.txt".format(i), "w") as f1:
-        f1.write(team_advanced_list[i-start].to_csv())
-
-    '''
+'''
     team_shooting_list.append(nbastats(i).team_shooting())
     opp_shooting_list.append(nbastats(i).opp_shooting())
-    '''
-
+'''
