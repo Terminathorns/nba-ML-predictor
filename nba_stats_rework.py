@@ -31,6 +31,7 @@ class nbastats:
             for td in tr.find_all('td'):
                 row = td.text
                 tables.append(row)
+        header[4:25] = [i + " Per Game" for i in header[4:25]]
 
         df_template = []
         
@@ -74,6 +75,7 @@ class nbastats:
             for th in tr.find_all('th'):
                 column = th.text
                 header.append(column)
+        header[4:25] = ["Opp " + i + " Per Game" for i in header[4:25]]
                 
         for tr in table.find_all('tbody'):
             for td in tr.find_all('td'):
@@ -122,6 +124,7 @@ class nbastats:
             for th in tr.find_all('th'):
                 column = th.text
                 header.append(column)
+        header[4:25] = [i + " Per 100" for i in header[4:25]]
                 
         for tr in table.find_all('tbody'):
             for td in tr.find_all('td'):
@@ -138,6 +141,10 @@ class nbastats:
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
         df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
+        
+        for i in header[1:]:
+            df[i] = df[i].astype(float)
+            df[i] = df[i].rank(ascending=False)
 
         for i in df['Team']:
             if i == champ:
@@ -171,7 +178,7 @@ class nbastats:
             for th in tr.find_all('th'):
                 column = th.text
                 header.append(column)
-            header[4:25] = ["Opp " + i for i in header[4:25]]
+        header[4:25] = ["Opp " + i + " Per 100" for i in header[4:25]]
                 
         for tr in table.find_all('tbody'):
             for td in tr.find_all('td'):
@@ -188,6 +195,10 @@ class nbastats:
         df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
 
+        for i in header[1:]:
+            df[i] = df[i].astype(float)
+            df[i] = df[i].rank(ascending=False)
+
         for i in df['Team']:
             if i == champ:
                 champ_check = True
@@ -202,7 +213,6 @@ class nbastats:
         #print("div_per_poss-team" in r.text)
         
         return df
-
 
     def team_advanced(self):
         url = "https://www.basketball-reference.com/leagues/NBA_{}.html".format(self.year)
@@ -221,7 +231,13 @@ class nbastats:
                 column = th.text
                 header.append(column)
         header = [i for i in header if i not in ('','Rk','Offense Four Factors','Defense Four Factors','\xa0')]
-                
+        header[16] = "Team " + header[16]
+        header[17] = "Team " + header[17]
+        header[19] = "Team " + header[19]
+        header[20] = "Opp " + header[20]
+        header[21] = "Opp " + header[21]
+        header[23] = "Opp " + header[23]
+
         for tr in table.find_all('tbody'):
             for td in tr.find_all('td',{'data-stat':'DUMMY'}):
                 #row = td(text=True,dummy=False)
@@ -246,6 +262,12 @@ class nbastats:
         df['Team'] = df['Team'].map(lambda x:x.rstrip('*'))
         df['Team'] = df['Team'].map(lambda y:str(int(self.year)) + " " + y)
         champ_check_list = []
+
+        for i in header[1:24]:
+            df[i] = df[i].astype(float)
+            df[i] = df[i].rank(ascending=False)
+        
+        df = df.drop(columns=['Arena','Attend.','Attend./G'])
 
         for i in df['Team']:
             if i == champ:
@@ -377,10 +399,6 @@ class nbastats:
         #print("table_container is_setup current" in r.text)
         #print("div_per_poss-team" in r.text)
         return df
-
-
-
-
 
 '''
 

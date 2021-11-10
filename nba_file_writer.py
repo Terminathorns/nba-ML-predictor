@@ -6,12 +6,22 @@ directory = "/Users/macowner/Documents/Predictor_csv_files/"
 
 def file_writer(start,end):
         years = range(start,end+1)
+        tpg = []
+        opg = []
         tp100 = []
         op100 = []
         tadv = []
         tdf = []
 
         for i in years:
+            '''
+            tpg.append(nsr.nbastats(i).team_per_game())
+            opg.append(nsr.nbastats(i).opp_per_game())
+
+            opg[i-start] = opg[i-start].set_index('Team')
+            opg[i-start] = opg[i-start].reindex(index=tpg[i-start]['Team'])
+            opg[i-start] = opg[i-start].reset_index()
+            '''
             tp100.append(nsr.nbastats(i).team_per_100())
             op100.append(nsr.nbastats(i).opp_per_100())
             
@@ -28,5 +38,3 @@ def file_writer(start,end):
         tdf_dataset = pd.concat([i for i in tdf],axis=0)
         with open(directory + "{}_to_{}_team_stats.txt".format(start,end), "w") as f1:
             f1.write(tdf_dataset.to_csv())
-
-file_writer(2022,2022)
