@@ -38,3 +38,6 @@ def file_writer(start,end):
         tdf_dataset = pd.concat([i for i in tdf],axis=0)
         with open(directory + "{}_to_{}_team_stats.txt".format(start,end), "w") as f1:
             f1.write(tdf_dataset.to_csv())
+
+file_writer(1990,2005)
+file_writer(2006,2006)
