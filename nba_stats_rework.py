@@ -399,13 +399,3 @@ class nbastats:
         #print("table_container is_setup current" in r.text)
         #print("div_per_poss-team" in r.text)
         return df
-
-'''
-
-
-'''
-
-'''
-    team_shooting_list.append(nbastats(i).team_shooting())
-    opp_shooting_list.append(nbastats(i).opp_shooting())
-'''
